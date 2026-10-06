@@ -1,0 +1,43 @@
+<svg width="1200" height="1500" viewBox="0 0 1200 1500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="tee" x1="600" y1="250" x2="600" y2="1270" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F2EFE7"/>
+      <stop offset="0.55" stop-color="#E5E0D5"/>
+      <stop offset="1" stop-color="#D7D0C3"/>
+    </linearGradient>
+    <linearGradient id="sleeveL" x1="255" y1="335" x2="355" y2="590" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ECE8DE"/>
+      <stop offset="1" stop-color="#D3CCBE"/>
+    </linearGradient>
+    <linearGradient id="sleeveR" x1="945" y1="335" x2="845" y2="590" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ECE8DE"/>
+      <stop offset="1" stop-color="#D3CCBE"/>
+    </linearGradient>
+    <filter id="shadow" x="130" y="210" width="940" height="1130" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="34" stdDeviation="28" flood-color="#11110F" flood-opacity="0.19"/>
+    </filter>
+    <filter id="soft" x="420" y="215" width="360" height="185" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+  </defs>
+
+  <ellipse cx="600" cy="1264" rx="382" ry="52" fill="#11110F" fill-opacity="0.13"/>
+
+  <g filter="url(#shadow)">
+    <path d="M446 266C404 277 367 293 327 319L220 381C194 396 179 420 183 447L202 547C207 575 232 591 260 581L351 548L333 1178C331 1230 365 1259 414 1263C540 1273 660 1273 786 1263C835 1259 869 1230 867 1178L849 548L940 581C968 591 993 575 998 547L1017 447C1021 420 1006 396 980 381L873 319C833 293 796 277 754 266C730 329 681 359 600 359C519 359 470 329 446 266Z" fill="url(#tee)"/>
+    <path d="M327 319L220 381C194 396 179 420 183 447L202 547C207 575 232 591 260 581L351 548L361 357C351 343 340 330 327 319Z" fill="url(#sleeveL)"/>
+    <path d="M873 319L980 381C1006 396 1021 420 1017 447L998 547C993 575 968 591 940 581L849 548L839 357C849 343 860 330 873 319Z" fill="url(#sleeveR)"/>
+  </g>
+
+  <ellipse cx="600" cy="298" rx="122" ry="72" fill="#5C574E" fill-opacity="0.27" filter="url(#soft)"/>
+  <ellipse cx="600" cy="290" rx="102" ry="58" fill="#C9C2B5"/>
+  <ellipse cx="600" cy="285" rx="82" ry="42" fill="#7D776D"/>
+  <ellipse cx="600" cy="280" rx="66" ry="31" fill="#D7D2C8"/>
+
+  <path d="M447 267C469 338 520 370 600 370C680 370 731 338 753 267" stroke="#C4BCAE" stroke-width="7" stroke-linecap="round" opacity="0.75"/>
+  <path d="M362 354C375 385 379 420 377 463" stroke="#C8C1B5" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+  <path d="M838 354C825 385 821 420 823 463" stroke="#C8C1B5" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+  <path d="M340 1175C441 1190 759 1190 860 1175" stroke="#BFB7AA" stroke-width="6" stroke-linecap="round" opacity="0.58"/>
+  <path d="M215 524C242 531 295 516 350 493" stroke="#BFB7AA" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+  <path d="M985 524C958 531 905 516 850 493" stroke="#BFB7AA" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+</svg>
