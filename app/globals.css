@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 :root {
   --ink: #11110f;
   --paper: #f4f2ec;

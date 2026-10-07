@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { ChangeEvent, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { SocialDraft, SocialPreview, type Platform } from "./SocialPreview";
+import { Navbar } from "@/components/layout/Navbar";
 
 const templates: { id: Platform; label: string; ratio: string; note: string }[] = [
   { id: "tiktok", label: "TikTok", ratio: "9:16", note: "Short-form video cover" },
@@ -71,7 +71,9 @@ export function SocialComposer() {
 
   return (
     <main className="min-h-screen bg-[#eceae3] text-[#11110f]">
-      <header className="sticky top-0 z-40 border-b border-black/10 bg-[#eceae3]/88 backdrop-blur-xl">
+      <Navbar variant="studio" action={{ label: "Export PNG ↓", busyLabel: "Rendering…", busy: exporting, onClick: exportPng }} />
+      {/* Export controls stay with the editor workflow below. */}
+      {/*
         <div className="mx-auto flex h-16 max-w-[1500px] items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-4">
             <Link href="/" className="flex items-center gap-2 font-semibold tracking-[-0.03em]">
@@ -89,7 +91,7 @@ export function SocialComposer() {
             {exporting ? "Rendering…" : "Export PNG ↓"}
           </button>
         </div>
-      </header>
+      </header> */}
 
       <div className="mx-auto grid min-h-[calc(100vh-64px)] max-w-[1500px] lg:grid-cols-[420px_1fr]">
         <aside className="border-b border-black/10 bg-[#f4f2ec] p-4 sm:p-6 lg:border-b-0 lg:border-r">
