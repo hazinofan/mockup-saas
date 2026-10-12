@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { motion } from "motion/react";
+import { BarChart3, Sparkles, UsersRound, Zap } from "lucide-react";
 import { GoogleSignIn } from "@/components/auth/GoogleSignIn";
 import { SpotlightCard } from "@/components/ui/SpotlightCard";
 import { Navbar } from "@/components/layout/Navbar";
@@ -177,7 +178,10 @@ export function LandingPage() {
           </div>
         </section>
 
-        <section id="why" className="mx-auto max-w-7xl px-4 pb-24 sm:px-6 lg:pb-32">
+        <CtaSection />
+        <CreateSection />
+        <WhySection />
+        <section id="why-legacy" className="hidden mx-auto max-w-7xl px-4 pb-24 sm:px-6 lg:pb-32">
           <div className="grid overflow-hidden rounded-[34px] border border-black/10 bg-[#dfddd5] md:grid-cols-2">
             <div data-reveal className="noise min-h-[480px] border-b border-black/10 p-7 md:border-b-0 md:border-r sm:p-10">
               <div className="relative z-10 flex h-full flex-col justify-between">
@@ -210,10 +214,9 @@ export function LandingPage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 pb-10 sm:px-6">
+        <section className="hidden mx-auto max-w-7xl px-4 pb-10 sm:px-6">
           <div data-reveal className="rounded-[36px] bg-[#c7ff3f] px-6 py-12 sm:px-10 sm:py-16 lg:flex lg:items-end lg:justify-between">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[.22em]">MVP is live locally</p>
               <h2 className="mt-4 max-w-3xl text-4xl font-semibold leading-[.92] tracking-[-0.055em] sm:text-6xl">
                 Make something worth stopping the scroll for.
               </h2>
@@ -225,12 +228,104 @@ export function LandingPage() {
         </section>
       </main>
 
-      <footer className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-8 text-xs text-black/45 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-        <span>nativeframe / prototype 01</span>
-        <span>Built for validation, not feature bloat.</span>
+      <footer className="mx-auto max-w-[1500px] px-4 pb-8 pt-2 sm:px-6">
+        <div className="flex flex-col gap-5 border-t border-black/[.1] py-7 text-sm text-black/50 sm:flex-row sm:items-center sm:justify-between">
+          <Link href="/" aria-label="nativeframe home" className="inline-flex items-center">
+            <Image src="/images/logo.png" alt="nativeframe" width={190} height={164} className="h-40 w-auto object-contain" />
+          </Link>
+          <nav className="flex flex-wrap gap-x-5 gap-y-2">
+            <a href="#templates" className="transition hover:text-black">Templates</a>
+            <a href="#flow" className="transition hover:text-black">How it works</a>
+            <a href="#why" className="transition hover:text-black">Why nativeframe</a>
+            <Link href="/studio" className="transition hover:text-black">Open studio ↗</Link>
+          </nav>
+          <span className="text-xs">© 2026 nativeframe</span>
+        </div>
       </footer>
     </div>
   );
+}
+
+function CreateSection() {
+  const formats = [
+    ["TikTok", "/images/tiktok.png"],
+    ["Instagram", "/images/instagram.png"],
+    ["X", "/images/x.png"],
+  ];
+  return (
+    <section className="mx-auto w-full max-w-[1500px] px-4 py-16 sm:px-6 lg:py-24">
+      <div className="relative grid items-center gap-12 lg:grid-cols-[.82fr_1.18fr] lg:gap-16">
+        <div className="relative z-10">
+          <div className="inline-flex items-center gap-4 rounded-full border border-[#dfff76] bg-[#efffc9]/70 px-5 py-3 font-mono text-xs uppercase tracking-[.22em] text-black"><span className="size-4 rounded-full bg-[#b8ff22] shadow-[0_0_12px_rgba(184,255,34,.75)]" />What you can create</div>
+          <h2 className="mt-9 max-w-[550px] text-[clamp(3.2rem,5.3vw,5.2rem)] font-semibold leading-[.91] tracking-[-0.07em]">Three native formats, one fast workflow.</h2>
+          <p className="mt-8 max-w-[530px] text-lg leading-7 text-black/55 sm:text-xl">Start with the right canvas for the moment — build a post, short-form screen, or social update that already feels platform-ready.</p>
+          <div className="mt-9 grid max-w-[520px] grid-cols-2 gap-3">
+            {[["Launch updates", Zap], ["Product teasers", BarChart3], ["Social proof", UsersRound], ["Team announcements", Sparkles]].map(([label, Icon]) => <div key={label as string} className="flex items-center gap-3 rounded-full border border-black/[.1] bg-white/45 px-3 py-2 text-sm sm:px-4 sm:py-3"><span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#efffc1] text-black"><Icon className="size-4" strokeWidth={2} /></span>{label as string}</div>)}
+          </div>
+        </div>
+        <div className="relative grid grid-cols-3 items-end gap-2 sm:gap-4">
+          <div className="pointer-events-none absolute -inset-8 rounded-full border border-[#d4ef54] opacity-80" />
+          <div className="pointer-events-none absolute -top-6 left-1/2 size-4 -translate-x-1/2 rounded-full bg-[#b8ff22] shadow-[0_0_16px_6px_rgba(184,255,34,.6)]" />
+          {formats.map(([title, src]) => <Image key={title} src={src} alt={`${title} template`} width={640} height={900} className="relative z-10 h-auto w-full object-contain" />)}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CtaSection() {
+  return (
+    <section className="mx-auto max-w-[1500px] px-4 pb-10 sm:px-6">
+      <div data-reveal className="relative min-h-[500px] overflow-hidden rounded-[30px] border border-white/80 bg-[#f8f7f2] shadow-[0_24px_80px_rgba(17,17,15,.06)] sm:min-h-[460px] sm:rounded-[36px]">
+        <Image src="/images/bg.png" alt="" fill className="object-cover" sizes="(max-width: 768px) 100vw, 1500px" />
+        <div className="relative z-10 flex min-h-[500px] flex-col justify-center px-6 py-12 sm:min-h-[460px] sm:px-16 sm:py-14 lg:px-20">
+          <h2 className="mt-8 max-w-[800px] text-[clamp(2.8rem,6vw,5.3rem)] font-semibold leading-[.9] tracking-[-0.07em] sm:mt-9">Make something worth<br className="hidden sm:block" /> stopping the scroll for.</h2>
+          <p className="mt-7 max-w-[650px] text-base leading-6 text-black/55 sm:mt-8 sm:text-xl sm:leading-7">The Nativeframe MVP is live locally — a browser-native studio for turning ideas into real products, faster.</p>
+          <Link href="/studio" className="mt-8 inline-flex w-fit items-center gap-4 rounded-full bg-[#11110f] px-7 py-4 text-base font-semibold text-white transition hover:-translate-y-1 sm:absolute sm:bottom-24 sm:right-16 sm:mt-0 sm:px-10 sm:py-5 sm:text-lg lg:right-20">Open the studio <span className="text-2xl">↗</span></Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function WhySection() {
+  const cards = [
+    ["bolt", "Fast", "Instant visual feedback. No generation queue."],
+    ["lock", "Private", "User media stays in the browser."],
+    ["target", "Focused", "One job: believable social-media visuals."],
+    ["phone", "Launchable", "Mobile-first flow built for TikTok traffic."],
+  ];
+  return (
+    <section id="why" className="mx-auto w-full max-w-[1500px] px-4 pb-24 sm:px-6 lg:pb-32">
+      <div className="relative overflow-hidden rounded-[34px] border border-black/[.1] bg-[#f8f7f2] p-6 shadow-[0_24px_80px_rgba(17,17,15,.04)] sm:p-10 lg:p-12">
+        <div className="pointer-events-none absolute -left-16 top-16 size-[430px] rounded-full bg-[#eaff8f]/35 blur-3xl" />
+        <div className="pointer-events-none absolute bottom-[-10%] left-[20%] size-[330px] rounded-full bg-[#dfff68]/30 blur-3xl" />
+        <div className="relative grid gap-10 lg:grid-cols-2 lg:gap-16">
+          <div data-reveal className="relative flex flex-col justify-between lg:min-h-[560px]">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[.25em] text-black/45">Local by design</p>
+              <h2 className="mt-7 max-w-[520px] text-[clamp(2.85rem,4.6vw,4.45rem)] font-semibold leading-[.92] tracking-[-0.07em]">Your visuals stay<br className="hidden sm:block" /> on your device.</h2>
+              <p className="mt-7 max-w-[500px] text-lg leading-[1.35] text-black/55 sm:text-xl">Everything runs in the browser, with no server-side image generation. Your media never leaves your device.</p>
+            </div>
+            <div className="relative mt-12 overflow-hidden rounded-[32px] border border-[#d7dfa9] bg-white/75 p-5 shadow-[0_14px_40px_rgba(129,145,33,.12)] sm:p-7 lg:mt-16">
+              <Image src="/images/steps.png" alt="Upload, browser, template, and export workflow" width={2172} height={724} className="h-auto w-full object-contain" />
+              <div className="mt-5 border-t border-black/[.08] pt-4 font-mono text-xs text-black/65 sm:mt-6 sm:pt-5 sm:text-sm">AI image API cost: <span className="font-semibold text-[#56a500]">$0</span></div>
+            </div>
+          </div>
+          <div className="relative grid gap-4 sm:grid-cols-2">
+            <div className="pointer-events-none absolute -left-36 top-[34%] hidden h-48 w-56 rounded-[50%] border-l border-t border-[#d4ef54] sm:block" />
+            <div className="pointer-events-none absolute -left-14 top-[40%] hidden size-4 rounded-full bg-[#c7ff3f] shadow-[0_0_14px_5px_rgba(199,255,63,.65)] sm:block" />
+            {cards.map(([icon, title, text]) => <div key={title} data-reveal className="relative min-h-[245px] rounded-[30px] border border-black/[.08] bg-white/65 p-7 shadow-[0_12px_32px_rgba(17,17,15,.045)] backdrop-blur-sm sm:p-8"><div className="mb-7 grid size-16 place-items-center rounded-full bg-[#efffc1] text-black"><FeatureIcon name={icon} /></div><h3 className="text-2xl font-semibold tracking-[-0.045em]">{title}</h3><p className="mt-3 max-w-[290px] text-lg leading-7 text-black/55">{text}</p></div>)}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FeatureIcon({ name }: { name: string }) {
+  const paths: Record<string, string> = { bolt: "M13 2 4 13h6l-1 9 9-11h-6l1-9Z", lock: "M7 10V7a5 5 0 0 1 10 0v3M5 10h14v11H5zM12 15v2", target: "M12 5a7 7 0 1 0 7 7M12 9a3 3 0 1 0 3 3", phone: "M8 3h8v18H8zM11 18h2", image: "m4 17 4-5 3 3 3-4 6 6M5 5h14v14H5z", browser: "M4 5h16v14H4zM4 9h16", grid: "M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z", download: "M12 3v12m0 0 5-5m-5 5-5-5M4 20h16" };
+  return <svg viewBox="0 0 24 24" className="size-7" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={paths[name]} /></svg>;
 }
 
 function WorkflowPreview({ index }: { index: number }) {

@@ -1,30 +1,50 @@
 "use client";
 
 import { ChangeEvent, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
+import { BarChart3, Camera, Image as ImageIcon, Info, LayoutGrid, Lock, Menu, Play, Smartphone, UploadCloud, UsersRound, Video } from "lucide-react";
 import { SocialDraft, SocialPreview, type Platform } from "./SocialPreview";
 import { Navbar } from "@/components/layout/Navbar";
 
-const templates: { id: Platform; label: string; ratio: string; note: string }[] = [
-  { id: "tiktok", label: "TikTok", ratio: "9:16", note: "Short-form video cover" },
-  { id: "instagram", label: "Instagram", ratio: "4:5", note: "Feed visual" },
-  { id: "x", label: "X", ratio: "16:9", note: "Post card" },
+const templates: { id: Platform; label: string; ratio: string; note: string; logo: string }[] = [
+  { id: "tiktok", label: "TikTok", ratio: "9:16", note: "Short-form video cover", logo: "/icons/tiktok.png" },
+  { id: "instagram", label: "Instagram", ratio: "4:5", note: "Feed visual", logo: "/icons/instagram.png" },
+  { id: "x", label: "X", ratio: "16:9", note: "Post card", logo: "/icons/x.png" },
 ];
 
 const defaults: SocialDraft = {
   platform: "tiktok",
   displayName: "Northside Studio",
   username: "northside.studio",
+  avatarUrl: null,
   caption: "quiet launch. loud result. made in less than a minute.",
+  postText: "quiet launch. loud result. made in less than a minute.",
+  music: "original sound - Northside Studio",
+  secondaryLine: "Original audio",
+  badge: "none",
   likes: "28.4K",
   comments: "913",
+  replies: "48",
+  favorites: "151",
   shares: "4.2K",
+  views: "125K",
+  timestamp: "2 HOURS AGO",
+  liked: false,
+  saved: false,
+  favorited: false,
+  bottomScrim: true,
+  darkTheme: false,
+  framed: true,
   imageUrl: null,
+  mediaType: null,
   imageZoom: 1,
 };
 
 export function SocialComposer() {
   const [draft, setDraft] = useState(defaults);
+  const [contentType, setContentType] = useState<"posts" | "videos">("videos");
+  const [zoom, setZoom] = useState(100);
   const [exporting, setExporting] = useState(false);
   const [exportError, setExportError] = useState("");
   const exportRef = useRef<HTMLDivElement>(null);
@@ -41,10 +61,11 @@ export function SocialComposer() {
   function handleFile(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (!file) return;
-    if (!file.type.startsWith("image/")) return;
+    if (!file.type.startsWith("image/") && !file.type.startsWith("video/")) return;
 
     const url = URL.createObjectURL(file);
     patch("imageUrl", url);
+    patch("mediaType", file.type.startsWith("video/") ? "video" : "image");
   }
 
   async function exportPng() {
@@ -93,30 +114,38 @@ export function SocialComposer() {
         </div>
       </header> */}
 
-      <div className="mx-auto grid min-h-[calc(100vh-64px)] max-w-[1500px] lg:grid-cols-[420px_1fr]">
-        <aside className="border-b border-black/10 bg-[#f4f2ec] p-4 sm:p-6 lg:border-b-0 lg:border-r">
+      <div className="grid min-h-screen w-full lg:grid-cols-[420px_1fr]">
+        <aside className="border-b border-black/10 bg-[#f4f2ec] p-4 sm:p-6 sm:pt-24 lg:border-b-0 lg:border-r">
           <div className="lg:sticky lg:top-22">
-            <div>
-              <p className="font-mono text-[10px] uppercase tracking-[.2em] text-black/38">Template</p>
+            <div className="rounded-2xl border border-black/[.08] bg-white/55 p-1">
+              <div className="grid grid-cols-2 gap-1">
+                {([["posts", ImageIcon], ["videos", Video]] as const).map(([type, Icon]) => <button key={type} type="button" onClick={() => setContentType(type)} className={`flex items-center justify-center gap-2 rounded-xl border py-3 text-sm font-semibold capitalize transition ${contentType === type ? "border-[#c6ef68] bg-white text-black shadow-[0_0_0_2px_rgba(198,239,104,.22),0_4px_12px_rgba(142,175,44,.1)]" : "border-transparent text-black/55 hover:bg-white"}`}><Icon size={16} />{type}</button>)}
+              </div>
+            </div>
+            <div className="mt-7">
+              <div className="flex items-center gap-2"><LayoutGrid size={17} /><h2 className="text-sm font-semibold">Choose a template</h2></div>
+              <p className="mt-1 text-xs text-black/45">Select the platform and format for your visual.</p>
               <div className="mt-3 grid grid-cols-3 gap-2">
-                {templates.map((template) => {
+                {(contentType === "videos" ? templates : templates.filter((template) => template.id !== "tiktok")).map((template) => {
                   const active = draft.platform === template.id;
                   return (
                     <button
                       key={template.id}
                       onClick={() => patch("platform", template.id)}
-                      className={`rounded-2xl border p-3 text-left transition ${active ? "border-black bg-black text-white" : "border-black/10 bg-white/55 hover:border-black/25"}`}
+                      className={`rounded-2xl border p-3 text-left transition ${active ? "border-[#b8ff22] bg-white text-black shadow-[0_0_0_2px_rgba(184,255,34,.28),0_8px_18px_rgba(142,175,44,.1)]" : "border-black/10 bg-white/55 hover:border-black/25"}`}
                     >
-                      <span className="text-sm font-semibold">{template.label}</span>
-                      <span className={`mt-1 block font-mono text-[9px] ${active ? "text-white/45" : "text-black/38"}`}>{template.ratio}</span>
+                      <Image src={template.logo} alt="" width={40} height={40} className="mb-2 size-10 object-contain" />
+                      <span className="block text-sm font-semibold">{template.label}</span>
+                      <span className={`mt-1 block font-mono text-[9px] ${active ? "text-black/45" : "text-black/38"}`}>{template.ratio}</span>
                     </button>
                   );
                 })}
               </div>
-              <p className="mt-2 text-xs text-black/40">{currentTemplate.note}</p>
+              <p className="mt-2 text-xs text-black/40">{contentType === "videos" ? currentTemplate.note : "Feed post format"}</p>
             </div>
 
             <div className="mt-7 space-y-5">
+              <div className="flex items-center gap-2 text-sm font-semibold"><UsersRound size={17} /> Creator info</div>
               <Field label="Display name">
                 <input value={draft.displayName} onChange={(e) => patch("displayName", e.target.value)} className="input" maxLength={40} />
               </Field>
@@ -126,21 +155,28 @@ export function SocialComposer() {
                   <input value={draft.username.replace(/^@/, "")} onChange={(e) => patch("username", e.target.value)} className="input pl-7" maxLength={30} />
                 </div>
               </Field>
+              <div className="flex items-center gap-2 text-sm font-semibold"><ImageIcon size={17} /> Caption / Post text</div>
               <Field label="Post text">
                 <textarea value={draft.caption} onChange={(e) => patch("caption", e.target.value)} className="input min-h-24 resize-none py-3 leading-6" maxLength={220} />
               </Field>
 
-              <div className="grid grid-cols-3 gap-2">
+              <div className="flex items-center gap-2 text-sm font-semibold"><BarChart3 size={17} /> Metrics</div>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                 <Field label="Likes"><input value={draft.likes} onChange={(e) => patch("likes", e.target.value)} className="input px-3" maxLength={8} /></Field>
                 <Field label="Comments"><input value={draft.comments} onChange={(e) => patch("comments", e.target.value)} className="input px-3" maxLength={8} /></Field>
                 <Field label="Shares"><input value={draft.shares} onChange={(e) => patch("shares", e.target.value)} className="input px-3" maxLength={8} /></Field>
+                <Field label="Views"><input value={draft.views} onChange={(e) => patch("views", e.target.value)} className="input px-3" maxLength={8} /></Field>
               </div>
 
-              <Field label="Background image">
-                <label className="flex min-h-24 cursor-pointer items-center justify-center rounded-2xl border border-dashed border-black/18 bg-white/55 px-4 text-center text-xs leading-5 text-black/48 transition hover:border-black/35 hover:bg-white">
-                  <input type="file" accept="image/png,image/jpeg,image/webp" onChange={handleFile} className="sr-only" />
-                  {draft.imageUrl ? "Replace image" : "Upload JPG, PNG or WebP"}
+              <div className="flex items-center gap-2 text-sm font-semibold"><ImageIcon size={17} /> Media</div>
+              <Field label="Upload a cover image or video thumbnail">
+                <label className="flex min-h-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl border border-dashed border-black/18 bg-white/55 px-4 text-center text-xs leading-5 text-black/48 transition hover:border-black/35 hover:bg-white">
+                  <input type="file" accept="image/png,image/jpeg,image/webp,video/mp4,video/webm" onChange={handleFile} className="sr-only" />
+                  <UploadCloud size={22} className="text-black/70" />
+                  <b className="text-black/75">{draft.imageUrl ? "Replace image" : "Upload image or video"}</b>
+                  <span>JPG, PNG or WebP</span>
                 </label>
+                {draft.imageUrl ? <button type="button" onClick={() => patch("imageUrl", null)} className="mt-2 text-xs font-medium text-red-600 hover:underline">Remove uploaded media</button> : null}
               </Field>
 
               {draft.imageUrl ? (
@@ -158,17 +194,18 @@ export function SocialComposer() {
               ) : null}
             </div>
 
-            <div className="mt-8 rounded-2xl border border-black/10 bg-[#c7ff3f] p-4 text-xs leading-5">
-              <b>Local render.</b> Uploaded media stays in the browser during this MVP flow.
+            <div className="mt-8 flex items-start gap-3 rounded-2xl border border-[#c9ef68] bg-[#efffc9] p-4 text-xs leading-5">
+              <Lock size={17} className="mt-0.5 shrink-0" /><p><b>Local render</b><br />Your media stays in your browser during this MVP flow.</p>
             </div>
             {exportError ? <p className="mt-3 text-xs text-red-700">{exportError}</p> : null}
           </div>
         </aside>
 
-        <section className="editor-grid relative flex min-h-[720px] items-center justify-center overflow-auto p-6 sm:p-10 lg:min-h-0">
+        <section className="editor-grid relative flex min-h-[420px] flex-col items-center justify-center overflow-auto p-6 sm:p-10 lg:min-h-0">
           <div className="absolute left-5 top-5 flex items-center gap-2 rounded-full border border-black/10 bg-[#f4f2ec]/85 px-3 py-1.5 text-[10px] font-mono uppercase tracking-[.15em] text-black/45 backdrop-blur">
             <span className="size-1.5 rounded-full bg-green-500" /> Live preview
           </div>
+          <div className="absolute right-5 top-5 flex items-center gap-2 rounded-full border border-black/10 bg-[#f4f2ec]/85 px-2 py-1.5 text-xs text-black/65 backdrop-blur"><button type="button" onClick={() => setZoom((value) => Math.max(70, value - 10))}>−</button><span className="min-w-10 text-center">{zoom}%</span><button type="button" onClick={() => setZoom((value) => Math.min(130, value + 10))}>+</button><span className="mx-1 h-4 w-px bg-black/10" /><Smartphone size={15} /><Menu size={15} /></div>
 
           <AnimatePresence mode="wait">
             <motion.div
@@ -177,11 +214,13 @@ export function SocialComposer() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.98, y: -8 }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="my-12"
+              className="my-12 origin-center"
+              style={{ transform: `scale(${zoom / 100})` }}
             >
               <SocialPreview draft={draft} exportRef={exportRef} />
             </motion.div>
           </AnimatePresence>
+          <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 gap-1 rounded-xl border border-black/[.08] bg-white/80 p-1 text-xs shadow-sm"><button className="rounded-lg border border-[#c6ef68] bg-white px-4 py-2 text-black shadow-[0_0_0_1px_rgba(198,239,104,.2)]">Preview</button><button className="rounded-lg px-4 py-2 text-black/60">Canvas</button></div>
         </section>
       </div>
 

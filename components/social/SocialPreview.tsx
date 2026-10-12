@@ -6,11 +6,27 @@ export type SocialDraft = {
   platform: Platform;
   displayName: string;
   username: string;
+  avatarUrl: string | null;
   caption: string;
+  postText: string;
+  music: string;
+  secondaryLine: string;
+  badge: "none" | "verified";
   likes: string;
   comments: string;
+  replies: string;
+  favorites: string;
   shares: string;
+  views: string;
+  timestamp: string;
+  liked: boolean;
+  saved: boolean;
+  favorited: boolean;
+  bottomScrim: boolean;
+  darkTheme: boolean;
+  framed: boolean;
   imageUrl: string | null;
+  mediaType: "image" | "video" | null;
   imageZoom: number;
 };
 
@@ -27,6 +43,7 @@ export function SocialPreview({ draft, exportRef }: Props) {
 
 function Background({ draft }: { draft: SocialDraft }) {
   if (draft.imageUrl) {
+    if (draft.mediaType === "video") return <video src={draft.imageUrl} autoPlay muted loop playsInline className="absolute inset-0 h-full w-full object-cover" style={{ transform: `scale(${draft.imageZoom})` }} />;
     return (
       <img
         src={draft.imageUrl}
@@ -44,7 +61,8 @@ function Background({ draft }: { draft: SocialDraft }) {
 
 function TikTokPreview({ draft, exportRef }: Props) {
   return (
-    <div ref={exportRef} className="relative h-[640px] w-[360px] overflow-hidden bg-black text-white shadow-[0_35px_100px_rgba(0,0,0,.25)]">
+    <div ref={exportRef} className="relative mx-auto h-[640px] w-[337px] overflow-hidden bg-transparent shadow-[0_35px_100px_rgba(0,0,0,.32)]">
+      <div className="absolute inset-[18px_21px_24px] overflow-hidden rounded-[34px] bg-black text-white">
       <Background draft={draft} />
       <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,.18),transparent_25%,transparent_58%,rgba(0,0,0,.72))]" />
 
@@ -66,13 +84,16 @@ function TikTokPreview({ draft, exportRef }: Props) {
         <p className="mt-2 max-w-[250px] text-[13px] leading-[18px] text-white/95">{draft.caption}</p>
         <p className="mt-3 text-[12px] font-medium text-white/80">♫ original sound · {draft.displayName}</p>
       </div>
+      </div>
+      <img src="/mockup/iphone.png" alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 z-50 h-full w-full object-fill" />
     </div>
   );
 }
 
 function InstagramPreview({ draft, exportRef }: Props) {
   return (
-    <div ref={exportRef} className="w-[360px] overflow-hidden bg-white text-[#111] shadow-[0_35px_100px_rgba(0,0,0,.18)]">
+    <div ref={exportRef} className="relative mx-auto h-[640px] w-[337px] overflow-hidden bg-transparent shadow-[0_35px_100px_rgba(0,0,0,.25)]">
+      <div className="absolute inset-[36px_21px_24px] overflow-hidden rounded-[34px] bg-white text-[#111]">
       <div className="flex h-[62px] items-center justify-between px-4">
         <div className="flex items-center gap-3">
           <div className="grid size-9 place-items-center rounded-full bg-[conic-gradient(#ff3040,#ffb000,#a32bff,#ff3040)] p-[2px]">
@@ -88,8 +109,8 @@ function InstagramPreview({ draft, exportRef }: Props) {
         <span className="text-lg leading-none">•••</span>
       </div>
 
-      <div className="relative aspect-[4/5] overflow-hidden bg-[#ddd]">
-        <Background draft={draft} />
+      <div className="relative aspect-[4/5] overflow-hidden bg-[#e8e7dc]">
+        {draft.imageUrl ? <Background draft={draft} /> : <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_25%,#d9ff72,transparent_30%),radial-gradient(circle_at_78%_28%,#e2b79f,transparent_30%),linear-gradient(145deg,#e9e8df,#c6c6b8)]" />}
       </div>
 
       <div className="px-4 pb-5 pt-3">
@@ -101,6 +122,8 @@ function InstagramPreview({ draft, exportRef }: Props) {
         <p className="mt-1 text-[12px] leading-[17px]"><b>{cleanHandle(draft.username)}</b> {draft.caption}</p>
         <p className="mt-2 text-[11px] text-black/42">View all {draft.comments} comments</p>
       </div>
+      </div>
+      <img src="/mockup/iphone.png" alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 z-50 h-full w-full object-fill mix-blend-multiply" />
     </div>
   );
 }
